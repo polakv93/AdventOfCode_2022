@@ -1,14 +1,20 @@
-﻿var maxCalories = 0;
+﻿IEnumerable<string> ReadLines()
+{
+    foreach (var line in File.ReadLines("./input.txt"))
+    {
+        yield return line;
+    }
+
+    yield return string.Empty;
+}
+
+var log = new List<int>();
 var sumOfCurrentCalories = 0;
-foreach (var line in File.ReadLines("./input.txt"))
+foreach (var line in ReadLines())
 {
     if (string.IsNullOrWhiteSpace(line))
     {
-        if (sumOfCurrentCalories > maxCalories)
-        {
-            maxCalories = sumOfCurrentCalories;
-        }
-
+        log.Add(sumOfCurrentCalories);
         sumOfCurrentCalories = 0;
     }
     else
@@ -17,4 +23,4 @@ foreach (var line in File.ReadLines("./input.txt"))
     }
 }
 
-Console.WriteLine(maxCalories);
+Console.WriteLine(log.OrderDescending().Take(3).Sum());
