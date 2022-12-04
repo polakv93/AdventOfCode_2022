@@ -10,14 +10,18 @@ foreach (var pairs in File.ReadLines("./input.txt"))
     
     //   f[0]|-|f[1]
     //  s[0]|---|s[1]
+    
+    //  f[0]|---|f[1]
+    //    s[0]|---|s[1]
+    
+    //   f[0]|----|f[1]
+    //  s[0]|---|s[1]
 
-    if ((firstPair[0] <= secondPair[0] && firstPair[1] >= secondPair[1]) ||
-        (secondPair[0] <= firstPair[0] && secondPair[1] >= firstPair[1]))
+    if (firstPair.Any(x => secondPair[0] <= x && x <= secondPair[1]) ||
+        secondPair.Any(x => firstPair[0] <= x && x <= firstPair[1]))
     {
         overlappingPairs++;
     }
-    
-    
 }
 
 Console.WriteLine(overlappingPairs);
