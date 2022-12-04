@@ -5,31 +5,44 @@
     { 'C', 3 }
 };
 
-var charShift = 'X' - 'A';
-
 var score = 0;
 const char rock = 'A';
 const char paper = 'B';
 const char scissors = 'C';
 
+const char loose = 'X';
+const char draw = 'Y';
+const char win = 'Z';
+
+var resultPoints = new Dictionary<char, int>
+{
+    { draw, 3 },
+    { loose, 0 },
+    { win, 6 }
+};
+
+
 foreach (var line in File.ReadLines("./input.txt"))
 {
     var opponent = line[0];
-    var my = (char)(line[2] - charShift);
-    score += scores[my];
 
-    if (my == opponent)
+    var expectedResult = line[2];
+
+    score += resultPoints[expectedResult];
+
+    score += (expectedResult, opponent) switch
     {
-        score += 3;
-        continue;
-    }
-    if ((my == rock && opponent == scissors )||
-        (my == scissors && opponent == paper )||
-        (my == paper && opponent == rock))
-    {
-        score += 6;
-        continue;
-    }
+        (loose, rock) => scores[scissors],
+        (loose, paper) => scores[rock],
+        (loose, scissors) => scores[paper],
+        (draw, rock) => scores[rock],
+        (draw, paper) => scores[paper],
+        (draw, scissors) => scores[scissors],
+        (win, rock) => scores[paper],
+        (win, paper) => scores[scissors],
+        (win, scissors) => scores[rock],
+        _ => throw new ArgumentOutOfRangeException()
+    };
 }
 
 Console.WriteLine(score);
