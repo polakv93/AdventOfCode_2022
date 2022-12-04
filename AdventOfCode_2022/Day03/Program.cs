@@ -19,14 +19,9 @@ while (i <= 'Z')
 
 var score = 0;
 
-
-foreach (var line in File.ReadLines("./input.txt"))
+foreach (var group in File.ReadLines("./input.txt").Chunk(3))
 {
-    var mid = line.Length / 2;
-    var first = line.Take(mid);
-    var second = line.Skip(mid);
-
-    var intersected = first.Intersect(second);
+    var intersected = group[0].Intersect(group[1]).Intersect(group[2]);
     foreach (var c in intersected)
     {
         score += priorities[c];
